@@ -3,7 +3,7 @@ const barRouter = express.Router();
 const bodyParser = express.json();
 const uuid = require('uuid/v4');
 const logger = require('../logger');
-const { foos, bars } = require('../reSTORE')
+const { foos, bars } = require('../src/reSTORE')
 
 //////////////////////////////////
 //////////////////////////////////

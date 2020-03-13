@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const fooRouter = require('../foo/fooRouter')
 const barRouter = require('../bar/barRouter')
+const rawResults = require('../results.json')
 
 
 const app = express()
@@ -46,7 +47,14 @@ console.log(process.env.API_TOKEN)
 //////////////////////////////////
 
 app.get('/', (req, res) => {
-  res.send('Hello, World!');
+
+  const results = rawResults[0].concat(rawResults[1], rawResults[2], rawResults[3], rawResults[4], rawResults[5], rawResults[6]);
+
+  const resultsWithNullDatesRemoved = results.filter(game => game.expected_release_day != null)
+
+  res.send(results);
+  console.log(results.length);
+  // console.log(certainDates[0].expected_release_month === '2');
 });
 
 //////////////////////////////////
