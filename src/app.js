@@ -1,26 +1,21 @@
-require('dotenv').config()
-const express = require('express')
-const morgan = require('morgan')
-const cors = require('cors')
-const helmet = require('helmet')
-const { NODE_ENV } = require('./config')
-const fooRouter = require('../foo/fooRouter')
-const barRouter = require('../bar/barRouter')
-const rawResults = require('../results.json')
-
+require('dotenv').config();
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const helmet = require('helmet');
+const moment = require('moment');
+const { NODE_ENV } = require('./config');
+const releasesRouter = require('../releases/releases-router');
+const rawResults = require('../results.json');
+const serviceFunctions = require('./serviceFunctions');
 
 const app = express()
 
-// Only turn this on if you want to generate new data,
-// and then turn it off, since nodemon will loop infinitely
-// generateNewData = require('./ObjectGenerator')
-reSTORE = require('./reSTORE.json')
-
 app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
     skip: () => NODE_ENV === 'test',
-  }))
-  app.use(cors())
-  app.use(helmet())
+  }));
+app.use(cors());
+app.use(helmet());
 
 
 // Validating the bearer token
@@ -39,8 +34,8 @@ app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
 
 // })
 
-app.use('/api/foo', fooRouter);
-app.use('/api/bar', barRouter);
+app.use('/api/releases', releasesRouter);
+
 
 console.log(process.env.API_TOKEN)
 
@@ -48,13 +43,27 @@ console.log(process.env.API_TOKEN)
 
 app.get('/', (req, res) => {
 
-  const results = rawResults[0].concat(rawResults[1], rawResults[2], rawResults[3], rawResults[4], rawResults[5], rawResults[6]);
+  // const results = rawResults[0].concat(rawResults[1], rawResults[2], rawResults[3], rawResults[4], rawResults[5], rawResults[6]);
+  const results = rawResults.flat();
 
-  const resultsWithNullDatesRemoved = results.filter(game => game.expected_release_day != null)
+  const filteredResults = serviceFunctions.filterReleases(results)
+  
 
-  res.send(results);
-  console.log(results.length);
-  // console.log(certainDates[0].expected_release_month === '2');
+  // const filteredResults = results.filter(result => result.expected_release_quarter !== null)
+
+  let arrNo = 0
+
+  // Day-month or month-day?
+
+  // We can reasonably assume that if there is a value for expected_release_quarter, other expected release information will be null, so we can use that value, append a Q to the front of it, concatenate it with the year and have our string.
+
+  const resArr = [results[arrNo].expected_release_year, results[arrNo].expected_release_month, results[arrNo].expected_release_day, results[arrNo].expected_release_quarter].filter(value => value !== null)
+
+  // if the length of that array is 0, is there a value in "original_release_date"; if so, use that, which is in YYYY-MM-DD so that's how we should do it but then we need a solution for quarters
+
+  res.send(filteredResults);
+  // console.log(results[0]);
+  // console.log(filteredResults)
 });
 
 //////////////////////////////////

@@ -1,0 +1,88 @@
+{
+    "aliases": null,
+    "api_detail_url": "https://www.giantbomb.com/api/game/3030-58950/",
+    "date_added": "2017-03-29 16:06:56",
+    "date_last_updated": "2020-02-05 13:26:18",
+    "deck": "Hellpoint is an occult sci fi RPG with couch coop. Explore the secrets of Irid Novo, a mysterious space colony orbiting in real time around a black hole.",
+    "description": null,
+    "expected_release_day": 16,
+    "expected_release_month": 4,
+    "expected_release_quarter": null,
+    "expected_release_year": 2020,
+    "guid": "3030-58950",
+    "id": 58950,
+    "image": {
+      "icon_url": "https://giantbomb1.cbsistatic.com/uploads/square_avatar/33/338834/2928812-poster3.jpg",
+      "medium_url": "https://giantbomb1.cbsistatic.com/uploads/scale_medium/33/338834/2928812-poster3.jpg",
+      "screen_url": "https://giantbomb1.cbsistatic.com/uploads/screen_medium/33/338834/2928812-poster3.jpg",
+      "screen_large_url": "https://giantbomb1.cbsistatic.com/uploads/screen_kubrick/33/338834/2928812-poster3.jpg",
+      "small_url": "https://giantbomb1.cbsistatic.com/uploads/scale_small/33/338834/2928812-poster3.jpg",
+      "super_url": "https://giantbomb1.cbsistatic.com/uploads/scale_large/33/338834/2928812-poster3.jpg",
+      "thumb_url": "https://giantbomb1.cbsistatic.com/uploads/scale_avatar/33/338834/2928812-poster3.jpg",
+      "tiny_url": "https://giantbomb1.cbsistatic.com/uploads/square_mini/33/338834/2928812-poster3.jpg",
+      "original_url": "https://giantbomb1.cbsistatic.com/uploads/original/33/338834/2928812-poster3.jpg",
+      "image_tags": "All Images"
+    },
+    "image_tags": [
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/images/3030-58950/?filter=image_tag%3AAll+Images",
+        "name": "All Images",
+        "total": 4
+      },
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/images/3030-58950/?filter=image_tag%3AHellpoint",
+        "name": "Hellpoint",
+        "total": 6
+      },
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/images/3030-58950/?filter=image_tag%3APAX+East+2019",
+        "name": "PAX East 2019",
+        "total": 1
+      },
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/images/3030-58950/?filter=image_tag%3APAX+West+2018",
+        "name": "PAX West 2018",
+        "total": 2
+      },
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/images/3030-58950/?filter=image_tag%3APAX+West+2019",
+        "name": "PAX West 2019",
+        "total": 1
+      }
+    ],
+    "name": "Hellpoint",
+    "number_of_user_reviews": 0,
+    "original_game_rating": null,
+    "original_release_date": null,
+    "platforms": [
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/platform/3045-94/",
+        "id": 94,
+        "name": "PC",
+        "site_detail_url": "https://www.giantbomb.com/pc/3045-94/",
+        "abbreviation": "PC"
+      },
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/platform/3045-145/",
+        "id": 145,
+        "name": "Xbox One",
+        "site_detail_url": "https://www.giantbomb.com/xbox-one/3045-145/",
+        "abbreviation": "XONE"
+      },
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/platform/3045-146/",
+        "id": 146,
+        "name": "PlayStation 4",
+        "site_detail_url": "https://www.giantbomb.com/playstation-4/3045-146/",
+        "abbreviation": "PS4"
+      },
+      {
+        "api_detail_url": "https://www.giantbomb.com/api/platform/3045-152/",
+        "id": 152,
+        "name": "Linux",
+        "site_detail_url": "https://www.giantbomb.com/linux/3045-152/",
+        "abbreviation": "LIN"
+      }
+    ],
+    "site_detail_url": "https://www.giantbomb.com/hellpoint/3030-58950/"
+}
