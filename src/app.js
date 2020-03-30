@@ -61,9 +61,39 @@ app.get('/', (req, res) => {
 
   // if the length of that array is 0, is there a value in "original_release_date"; if so, use that, which is in YYYY-MM-DD so that's how we should do it but then we need a solution for quarters
 
-  res.send(filteredResults);
+  // res.send(filteredResults);
   // console.log(results[0]);
   // console.log(filteredResults)
+  
+
+  // // For a new room, messages will be an empty array; this is fine
+  // .get((req, res, next) => {
+  //   const room = req.url.slice(1);
+
+  //   // To prevent bugs which could allow users to see the content of
+  //   // conversations when they try to join full rooms, reject the request
+  //   // if socket.connected logs false on the client side
+  //   if (req.headers.isconnected === 'true') {
+  //     RoomsService.getAllMessages(req.app.get('db'), room)
+  //       .then(messages => {
+  //         res.json(messages);
+  //       })
+  //       .catch(next);
+  //   } else if (req.headers.isconnected === 'false') {
+  //     return res.status(404).json({
+  //       error: {
+  //         message: `You have disconnected from the socket, or the room is full.`
+  //       }
+  //     });
+  //   }
+  // })
+
+  serviceFunctions.getAllReleases(req.app.get('db'))
+    .then(releases => {
+      res.json(releases)
+    })
+    .catch(err => console.log(err))
+
 });
 
 //////////////////////////////////

@@ -8,6 +8,7 @@ const cron = require("node-cron");
 const fetch = require("node-fetch");
 const serviceFunctions = require('./serviceFunctions');
 // const jsonParser = express.json()
+const rawResults = require('../results.json');
 
 const db = knex({
   client: 'pg',
@@ -25,9 +26,32 @@ app.set('db', db)
 // | minute
 // second ( optional )
 
-// Schedule a ping of the reddit API for two random subreddits and stick them in a database
-
 dataArray = [];
+
+cron.schedule('00 01 20 * * *', function() {
+
+  console.log('8:01:00')
+
+  const releases = rawResults.flat();
+
+  const filteredReleases = serviceFunctions.filterReleases(releases)
+
+  // DOESN'T WORK
+  // serviceFunctions.insertReleases(filteredReleases).then(x => console.log(x)).catch(err => console.log(err))
+
+  // WORKS
+  // filteredReleases.forEach(release => console.log(release));
+
+  // ALSO DOESN'T WORK
+  // filteredReleases.forEach(release => serviceFunctions.insertReleases(db, release).then(x => console.log(x)));
+
+  // WORKS!
+  const releasesToInsert = filteredReleases.map(release => 
+    ({ boxart_url: release.boxart_url, game_name: release.game_name, game_description: release.game_description, platforms: release.platforms, release_date_utc: release.release_date_UTC, release_date_iso: release.release_date_ISO, release_day: release.release_day, release_month: release.release_month, release_year: release.release_year, release_quarter: release.release_quarter }));
+
+  serviceFunctions.insertReleases(db, releasesToInsert).then(x => console.log(x)).catch(err => console.log(err))
+
+})
 
 cron.schedule('* * * * *', function() {  
 
@@ -84,6 +108,10 @@ cron.schedule('* * * * *', function() {
   }
 
 })
+
+// Are they going to want me to establish /game/:game routes and /date/:date routes or something?
+
+// If so you might need a /favorites/ or something for the post requests?
 
 /// Will need to filter out all releases for which expected_release_day, expected_release_month and expected_release_year are all null and see what that looks like
 
