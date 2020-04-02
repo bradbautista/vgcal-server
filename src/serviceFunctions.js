@@ -1,4 +1,5 @@
 const moment = require('moment');
+const fetch = require("node-fetch");
 
 const serviceFunctions = {
 
@@ -96,7 +97,7 @@ const serviceFunctions = {
             // art, replace it with one that lets people know it's not available
             tempObj.boxart_url = (release.image.original_url === 'https://giantbomb1.cbsistatic.com/uploads/original/11/110673/3026329-gb_default-16_9.png')
                 // Obv need to make img
-                ? 'Replace with url for custom image'
+                ? 'https://raw.githubusercontent.com/bradbautista/vgcal-server/master/src/images/noart.png'
                 : release.image.original_url
             
             tempObj.game_name = release.name
@@ -132,30 +133,93 @@ const serviceFunctions = {
         return filteredReleases;
     },
 
-    getAllSubreddits(knex) {
-        return knex.raw(
-            `select * from subreddit_names;`
-        )
-    },
-
-    // insertReleases(knex, releases) {
-
-    //     return knex
-    //         .batchInsert('vgcal_releases', releases)
-    //         .returning('*')
-
-    // },
-
     insertReleases(knex, releases) {
         return knex
             .insert(releases)
             .into('vgcal_releases')
     },
 
+    deleteReleasesByYear(knex, year) {
+        return knex
+            .del()
+            .from('vgcal_releases')
+            .where('release_year', year)
+    },
+
+    checkStatus(response) {
+        if (response.ok) {
+            console.log(response.body)
+            return Promise.resolve(response);
+        } else {
+            return Promise.reject(new Error(response.statusText));
+        }
+    },
+
+    parseJSON(response) {
+        return response.json()
+    },
+
+    fetchReleasesByYear(year, offset) {
+
+        // You can't call this on function invocation
+        // because it will reset, you have to call it
+        // in the recursive case
+
+        const url = 
+            `https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:${year}&offset=${offset}`
+        
+            fetch(url)
+                .then(this.checkStatus)
+                .then(this.parseJSON)
+                .catch(error => console.log('There was a problem!', error))
+                
+
+            // offset = offset + 100;
+            // this.fetchReleasesByYear(year, offset)
+
+        //   Promise.all(urls.map(url =>
+        //     fetch(url)
+        //       .then(checkStatus)                 
+        //       .then(parseJSON)
+        //       .catch(error => console.log('There was a problem!', error))
+        //   ))
+
+
+
+    },
+
     getAllReleases(knex) {
         return knex
             .select('*')
             .from('vgcal_releases')
+    },
+
+    getReleases(knex, release) {
+        return knex
+            .select('game_name', 'release_date_iso', 'release_date_utc')
+            .from('vgcal_releases')
+            .where('game_name', release)
+    },
+
+    formatICalEvents(array) {
+
+        const objArray = array.map(game => {
+
+            const obj = {}
+
+            obj.domain = 'vgcal.now.sh'
+            obj.start = (game.releaseDay === undefined)
+            ? moment(game.releaseDate, ['MMMM YYYY', 'YYYY', 'Q YYYY'])
+            : game.releaseDay
+            obj.allDay = true
+            obj.summary = game.gameTitle
+    
+            return obj;
+
+        })
+
+        return objArray
+
     },
 
     // insertReleases(knex, release) {

@@ -28,13 +28,30 @@ app.set('db', db)
 
 dataArray = [];
 
-cron.schedule('00 01 20 * * *', function() {
+// GET THE RELEASES
+    // FETCH RELEASES BY YEAR?
+      // FOR SOME REASON EXPECTED_RELEASE_YEAR:YEAR WORKS AND RETURNS GAMES WHERE
+      // ORIGINAL_RELEASE_DATE HAS YEAR IN IT
+        // WE GET 2176 FOR 2019 
+            // LIMIT 100, OFFSET 0, NUMBER OF TOTAL RESULTS 2176
+// FORMAT THE RELEASES
+// WRITE TO FILE AND EMAIL BACKUP?
+// DELETE RELEASES
+// INSERT RELEASES
 
-  console.log('8:01:00')
+cron.schedule('00 16 00 * * *', function() {
 
-  const releases = rawResults.flat();
+  console.log('12:16:00')
 
-  const filteredReleases = serviceFunctions.filterReleases(releases)
+  serviceFunctions.fetchReleasesByYear('2020', '0')
+
+  // DELETE RELEASES
+  // serviceFunctions.deleteReleasesByYear(db, '2020').then(x => console.log(x));
+
+  // const releases = rawResults.flat();
+
+  // FORMAT THE RELEASES
+  // const filteredReleases = serviceFunctions.filterReleases(releases)
 
   // DOESN'T WORK
   // serviceFunctions.insertReleases(filteredReleases).then(x => console.log(x)).catch(err => console.log(err))
@@ -46,10 +63,11 @@ cron.schedule('00 01 20 * * *', function() {
   // filteredReleases.forEach(release => serviceFunctions.insertReleases(db, release).then(x => console.log(x)));
 
   // WORKS!
-  const releasesToInsert = filteredReleases.map(release => 
-    ({ boxart_url: release.boxart_url, game_name: release.game_name, game_description: release.game_description, platforms: release.platforms, release_date_utc: release.release_date_UTC, release_date_iso: release.release_date_ISO, release_day: release.release_day, release_month: release.release_month, release_year: release.release_year, release_quarter: release.release_quarter }));
+  // const releasesToInsert = filteredReleases.map(release => 
+  //   ({ boxart_url: release.boxart_url, game_name: release.game_name, game_description: release.game_description, platforms: release.platforms, release_date_utc: release.release_date_UTC, release_date_iso: release.release_date_ISO, release_day: release.release_day, release_month: release.release_month, release_year: release.release_year, release_quarter: release.release_quarter }));
 
-  serviceFunctions.insertReleases(db, releasesToInsert).then(x => console.log(x)).catch(err => console.log(err))
+  // INSERT RELEASES
+  // serviceFunctions.insertReleases(db, releasesToInsert).then(x => console.log(x)).catch(err => console.log(err))
 
 })
 
@@ -79,6 +97,8 @@ cron.schedule('* * * * *', function() {
   //     // console.log(dataArray)
 
     // SELF, YOU CAN JUST FLATTEN DATAARRAY TO GET YOUR ARRAY OF OBJECTS
+
+    // WRITE TO FILE
 
   //     fs.writeFile('results.json', JSON.stringify(dataArray), (err) => {
   //       if (err) throw err;
