@@ -9,7 +9,7 @@
 /coverage
 
 # some PII
-/src/config.js
+src/config.js
 
 # production
 /build
