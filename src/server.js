@@ -24,11 +24,11 @@ app.set('db', db)
 // | minute
 // second ( optional )
 
-const hour = 01; // 00 - 23
-const minute = '00'; // 00 - 59; str for leading 0s
+const hour = 14; // 00 - 23
+const minute = '15'; // 00 - 59; str for leading 0s
 
 // Want to add a year to the database? Add a year to this array
-const years = ['2015', '2014', '2013', '2012'];
+const years = ['2020', '2021'];
 
 // Sequentially schedule updates and backups of data 
 // for the years in the array above
