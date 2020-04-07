@@ -7,7 +7,6 @@ const moment = require('moment');
 const { NODE_ENV } = require('./config');
 const releasesRouter = require('../releases/releases-router');
 const favoritesRouter = require('../favorites/favorites-router');
-const rawResults = require('../results.json');
 const serviceFunctions = require('./serviceFunctions');
 
 const app = express()

@@ -5,7 +5,6 @@ const app = require('./app');
 const { PORT, DATABASE_URL, EMAILUSER } = require('./config');
 const cron = require("node-cron");
 const serviceFunctions = require('./serviceFunctions');
-const releases = require('../04-04-2020-2016.json')
 
 const db = knex({
   client: 'pg',
@@ -25,7 +24,7 @@ app.set('db', db)
 // second ( optional )
 
 const hour = 14; // 00 - 23
-const minute = '15'; // 00 - 59; str for leading 0s
+const minute = '20'; // 00 - 59; str for leading 0s
 
 // Want to add a year to the database? Add a year to this array
 const years = ['2020', '2021'];
