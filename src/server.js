@@ -59,7 +59,7 @@ years.forEach((year, i) => {
 
 })
 
-cron.schedule('00 35 14 * * *', function() {
+cron.schedule('* * * * *', function() {
 
   console.log('Heroku test')
 
