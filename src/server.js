@@ -59,11 +59,11 @@ years.forEach((year, i) => {
 
 })
 
-// cron.schedule('00 20 14 * * *', function() {
+cron.schedule('00 35 14 * * *', function() {
 
-//   serviceFunctions.insertReleases(db, releases).then(x => console.log(x)).catch(err => console.log(err));
+  console.log('Heroku test')
 
-// })
+})
 
 
 app.listen(PORT, () => {
