@@ -22,18 +22,6 @@ favoritesRouter
     }).serve(res);
 
   })
-  
-  // Eventually will be for updating favorites number
-  .patch(jsonParser, (req, res, next) => {
-    const room = req.url.slice(1);
-
-    const { msg } = req.body;
-
-    RoomsService.addToConversation(req.app.get('db'), msg, room)
-      .then(() => res.status(201).json({ message: 'Conversation updated.' }))
-      .catch(next);
-  });
-
 
   
 

@@ -8,7 +8,7 @@ TRUNCATE
   vgcal_releases
   RESTART IDENTITY CASCADE;
 
-INSERT INTO vgcal_releases (id, boxart_url, game_name, game_description, platforms, release_date_UTC, release_date_ISO, release_day, release_month, release_year, release_quarter)
+INSERT INTO vgcal_releases (id, boxart_url, game_name, game_description, platforms, release_date_utc, release_date_iso, release_day, release_month, release_year, release_quarter)
 VALUES
   (
     1, 

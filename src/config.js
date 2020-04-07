@@ -1,6 +1,7 @@
 module.exports = {
   PORT: process.env.PORT || 17043,
-  DB_URL: process.env.DB_URL || 'postgresql://postgres:0m8x34s3@localhost/vgcal_db',
-  TEST_DB_URL: process.env.TEST_DB_URL || 'postgresql://postgres:0m8x34s3@localhost/vgcal_test_db'
+  DATABASE_URL: process.env.DATABASE_URL || `postgresql://${process.env.DBUSER}:${process.env.DBPASS}@localhost/vgcal_db`,
+  TEST_DATABASE_URL: process.env.TEST_DATABASE_URL || `postgresql://${process.env.DBUSER}:${process.env.DBPASS}@localhost/vgcal_test_db`,
+  EMAILPASS: process.env.EMAILPASS,
+  EMAILUSER: process.env.EMAILUSER
 }
-  

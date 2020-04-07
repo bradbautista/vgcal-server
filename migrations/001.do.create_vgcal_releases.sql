@@ -9,9 +9,9 @@ CREATE TABLE vgcal_releases (
     -- If null, server should replace with "No description provided."
     platforms TEXT NOT NULL,
     -- If null, server should replace with "Platform information unavailable."
-    release_date_UTC TEXT NOT NULL,
+    release_date_utc TEXT NOT NULL,
     -- Release date in the format January 1, 2020 OR January 2020 OR 2020
-    release_date_ISO TEXT,
+    release_date_iso TEXT,
     -- Release date in the format YYYY-MM-DD, can be null;
     -- should be null for cases where full release date is not
     -- available, so that client can filter API response for

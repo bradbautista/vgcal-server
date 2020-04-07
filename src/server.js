@@ -2,21 +2,19 @@ require('dotenv').config();
 
 const knex = require('knex');
 const app = require('./app');
-const fs = require('fs');
-const { PORT, DB_URL } = require('./config');
+const { PORT, DATABASE_URL, EMAILUSER } = require('./config');
 const cron = require("node-cron");
-const fetch = require("node-fetch");
 const serviceFunctions = require('./serviceFunctions');
-// const jsonParser = express.json()
-const rawResults = require('../results.json');
+const releases = require('../04-04-2020-2016.json')
 
 const db = knex({
   client: 'pg',
-  connection: DB_URL,
+  connection: DATABASE_URL,
 })
 
 app.set('db', db)
 
+// CRON KEY //
 // * * * * * *
 // | | | | | |
 // | | | | | day of week
@@ -26,114 +24,47 @@ app.set('db', db)
 // | minute
 // second ( optional )
 
-dataArray = [];
+const hour = 01; // 00 - 23
+const minute = '00'; // 00 - 59; str for leading 0s
 
-// GET THE RELEASES
-    // FETCH RELEASES BY YEAR?
-      // FOR SOME REASON EXPECTED_RELEASE_YEAR:YEAR WORKS AND RETURNS GAMES WHERE
-      // ORIGINAL_RELEASE_DATE HAS YEAR IN IT
-        // WE GET 2176 FOR 2019 
-            // LIMIT 100, OFFSET 0, NUMBER OF TOTAL RESULTS 2176
-// FORMAT THE RELEASES
-// WRITE TO FILE AND EMAIL BACKUP?
-// DELETE RELEASES
-// INSERT RELEASES
+// Want to add a year to the database? Add a year to this array
+const years = ['2015', '2014', '2013', '2012'];
 
-cron.schedule('00 16 00 * * *', function() {
+// Sequentially schedule updates and backups of data 
+// for the years in the array above
+years.forEach((year, i) => {
 
-  console.log('12:16:00')
+  console.log(`Scheduling refresh of ${year} releases for ${(hour > 12) ? (hour - 12) + i : hour + i}:${minute} ${(hour > 11) ? 'p.m.' : 'a.m.' } `)
 
-  serviceFunctions.fetchReleasesByYear('2020', '0')
+    cron.schedule(`00 ${minute} ${hour + i} * * *`, function() {
 
-  // DELETE RELEASES
-  // serviceFunctions.deleteReleasesByYear(db, '2020').then(x => console.log(x));
+      console.log(`Refreshing ${year} releases`);
+      serviceFunctions.fetchAndManageReleasesByYear(db, year);
 
-  // const releases = rawResults.flat();
+    })
 
-  // FORMAT THE RELEASES
-  // const filteredReleases = serviceFunctions.filterReleases(releases)
+  console.log(`Scheduling transmission of backup of ${year} releases for ${(hour > 12) ? (hour - 12) + i : hour + i}:${minute} ${(hour > 11) ? 'p.m.' : 'a.m.' } and 15 seconds`)
 
-  // DOESN'T WORK
-  // serviceFunctions.insertReleases(filteredReleases).then(x => console.log(x)).catch(err => console.log(err))
+    cron.schedule(`15 ${minute} ${hour + i} * * *`, function() {
 
-  // WORKS
-  // filteredReleases.forEach(release => console.log(release));
+      console.log(`It's ${(hour > 12) ? (hour - 12) + i : hour + i}:${minute} ${(hour > 11) ? 'p.m.' : 'a.m.' }, e-mailing daily backup of records for ${year} to ${EMAILUSER}`);
 
-  // ALSO DOESN'T WORK
-  // filteredReleases.forEach(release => serviceFunctions.insertReleases(db, release).then(x => console.log(x)));
+      // If we try to chain emailFile off any of the promises in the above-
+      // scheduled function, or run it elsewhere in the function, or with
+      // a setTimeout, it either jumps the gun or doesn't work, so we're waiting
+      // via a separate cron job and adding some time as padding
 
-  // WORKS!
-  // const releasesToInsert = filteredReleases.map(release => 
-  //   ({ boxart_url: release.boxart_url, game_name: release.game_name, game_description: release.game_description, platforms: release.platforms, release_date_utc: release.release_date_UTC, release_date_iso: release.release_date_ISO, release_day: release.release_day, release_month: release.release_month, release_year: release.release_year, release_quarter: release.release_quarter }));
+      serviceFunctions.emailFile(year);
 
-  // INSERT RELEASES
-  // serviceFunctions.insertReleases(db, releasesToInsert).then(x => console.log(x)).catch(err => console.log(err))
+    })
 
 })
 
-cron.schedule('* * * * *', function() {  
+// cron.schedule('00 20 14 * * *', function() {
 
-  // console.log(`It's been a minute`)
+//   serviceFunctions.insertReleases(db, releases).then(x => console.log(x)).catch(err => console.log(err));
 
-  // 2020 releases
-  // const urls = [
-  //   'https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:2020&offset=0',
-  //   'https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:2020&offset=100',
-  //   'https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:2020&offset=200',
-  //   'https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:2020&offset=300',
-  //   'https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:2020&offset=400',
-  //   'https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:2020&offset=500',
-  //   'https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:2020&offset=600',
-  // ];
-  
-  //   Promise.all(urls.map(url =>
-  //     fetch(url)
-  //       .then(checkStatus)                 
-  //       .then(parseJSON)
-  //       .catch(error => console.log('There was a problem!', error))
-  //   ))
-  //   .then(data => {
-  //     data.forEach(obj => dataArray.push(obj.results));
-  //     // console.log(dataArray)
-
-    // SELF, YOU CAN JUST FLATTEN DATAARRAY TO GET YOUR ARRAY OF OBJECTS
-
-    // WRITE TO FILE
-
-  //     fs.writeFile('results.json', JSON.stringify(dataArray), (err) => {
-  //       if (err) throw err;
-  //       console.log('The file has been saved!');
-  //     });
-  //   })
-  //   .catch(error => console.log('There was a problem!', error))
-    
-  // });
-
-  // Server makes request to API
-  // API sends response
-  // Server ingests response
-  // Formats it
-  // Inserts it into database
-
-  function checkStatus(response) {
-    if (response.ok) {
-      return Promise.resolve(response);
-    } else {
-      return Promise.reject(new Error(response.statusText));
-    }
-  }
-
-  function parseJSON(response) {
-    return response.json();
-  }
-
-})
-
-// Are they going to want me to establish /game/:game routes and /date/:date routes or something?
-
-// If so you might need a /favorites/ or something for the post requests?
-
-/// Will need to filter out all releases for which expected_release_day, expected_release_month and expected_release_year are all null and see what that looks like
+// })
 
 
 app.listen(PORT, () => {
