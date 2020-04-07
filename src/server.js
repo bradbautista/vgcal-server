@@ -5,6 +5,7 @@ const app = require('./app');
 const { PORT, DATABASE_URL, EMAILUSER } = require('./config');
 const cron = require("node-cron");
 const serviceFunctions = require('./serviceFunctions');
+const moment = require('moment');
 
 const db = knex({
   client: 'pg',
@@ -61,7 +62,10 @@ years.forEach((year, i) => {
 
 cron.schedule('* * * * *', function() {
 
-  console.log('Heroku test')
+  const now = moment().format('MMMM DD YYYY HH:MM:SS')
+
+  console.log('The current date and time is')
+  console.log(now)
 
 })
 
