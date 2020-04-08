@@ -9,7 +9,7 @@ releasesRouter
 
     serviceFunctions.getAllReleases(req.app.get('db'))
     .then(releases => {
-      res.json(releases)
+      res.json(releases);
     })
     .catch(err => console.log(err))
 

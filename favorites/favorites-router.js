@@ -1,6 +1,4 @@
 const express = require('express');
-const path = require('path');
-const moment = require('moment');
 const ical = require('ical-generator');
 const serviceFunctions = require('../src/serviceFunctions');
 
@@ -11,11 +9,11 @@ favoritesRouter
 
   .route('/generate')
 
-  .post(jsonParser, (req, res, next) => {
+  .post(jsonParser, (req, res) => {
 
-    const games = req.body
+    const games = req.body;
 
-    const calendarEvents = serviceFunctions.formatICalEvents(games)
+    const calendarEvents = serviceFunctions.formatICalEvents(games);
 
     ical({
         events: calendarEvents

@@ -183,8 +183,8 @@ const serviceFunctions = {
               from: '"vgCal 📅" <cal@vgcal.now.sh>', // sender address
               to: EMAILUSER, // list of receivers
               subject: `Backup for ${today}-${year}`, // Subject line
-              text: `Here's the backup! Today's lucky number is: ${Math.ceil(Math.random() * 100)}`, // plain text body
-              html: `<h2>Here's the backup!</h2><h3>Today's lucky number is: ${Math.ceil(Math.random() * 100)}.</h3>`, // html body
+              text: `Here's the backup! Your lucky number is: ${Math.ceil(Math.random() * 100)}`, // plain text body
+              html: `<h2>Here's the backup!</h2><h3>Your lucky number is: ${Math.ceil(Math.random() * 100)}.</h3>`, // html body
               attachments: [        
                 {   
                     // filename and content type is derived from path
@@ -205,7 +205,7 @@ const serviceFunctions = {
 
         let offset = 0;
 
-        const urls = []
+        const urls = [];
 
         // Delete previous database records; this needs to complete before we
         // call our inserting function
@@ -220,7 +220,7 @@ const serviceFunctions = {
             const totalResults = json.number_of_total_results;
 
             // 100 b/c it's the no. of records/page API delivers
-            const fetchesToMake = Math.ceil(totalResults / 100)
+            const fetchesToMake = Math.ceil(totalResults / 100);
 
             for (let i = 0; i < fetchesToMake; i++) {
                 urls.push(`https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:${year}&offset=${offset + (i * 100)}`);
