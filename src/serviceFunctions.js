@@ -1,10 +1,9 @@
 require('dotenv').config();
-const { EMAILUSER, EMAILPASS } = require('./config');
+const { EMAILUSER, EMAILPASS, GBAPIKEY } = require('./config');
 const nodemailer = require("nodemailer");
 const moment = require('moment');
 const fetch = require('node-fetch');
 const fs = require('fs');
-
 
 const serviceFunctions = {
 
@@ -88,7 +87,7 @@ const serviceFunctions = {
                 : release.expected_release_day
 
             // Have to pass all these to functions for date
-            // parsing so let's bundle them; TODO wrote this more
+            // parsing so let's bundle them; wrote this more
             // verbosely than it needs to be written, can clean up
             let releaseDateInfo = {
                 expected_release_year: year,
@@ -213,7 +212,7 @@ const serviceFunctions = {
 
         // Fetch the releases for the given year, calculating how many
         // calls we need to make by inspecting the API response
-        fetch(`https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:${year}&offset=${offset}`)
+        fetch(`https://www.giantbomb.com/api/games/?api_key=${GBAPIKEY}&format=json&filter=expected_release_year:${year}&offset=${offset}`)
         .then(response => response.json())
         .then(json => {
             
@@ -223,7 +222,7 @@ const serviceFunctions = {
             const fetchesToMake = Math.ceil(totalResults / 100);
 
             for (let i = 0; i < fetchesToMake; i++) {
-                urls.push(`https://www.giantbomb.com/api/games/?api_key=dc3197959811df35567dc05e363745c743c6d2c1&format=json&filter=expected_release_year:${year}&offset=${offset + (i * 100)}`);
+                urls.push(`https://www.giantbomb.com/api/games/?api_key=${GBAPIKEY}&format=json&filter=expected_release_year:${year}&offset=${offset + (i * 100)}`);
             }
 
             Promise.all(urls.map(url => 

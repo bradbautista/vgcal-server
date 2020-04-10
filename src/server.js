@@ -26,7 +26,7 @@ app.set('db', db);
 
 // Note Heroku server is +4 hrs from EST/EDT
 const hour = 01; // 00 - 23
-const minute = '00'; // 00 - 59; str for leading 0s
+const minute = '20'; // 00 - 59; str for leading 0s
 
 // Want to add a year to the database? Add a year to this array
 // No need to update <= 2019 regularly, but 2020 & 2021 should be
