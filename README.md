@@ -32,7 +32,7 @@ Once it gets that data, it formats it and automatically deletes previous records
 
 **Automatic backups**
 
-In addition to inserting data into its database, vgCal's server also writes that data to a json file and emails it to the server admin via nodemailer.
+In addition to inserting data into its database, vgCal's server also writes that data to a json file and emails it to the server admin via nodemailer. This also serves as a helpful log in the event that something goes wrong or you want to check on things.
 
 **Easy expansion**
 
