@@ -24,6 +24,8 @@ vgCal's server serves a few purposes:
 <a name="features"></a>
 ## Features
 
+[vgCal server scheduling demonstration](https://github.com/bradbautista/vgcal-server/blob/master/images/cron.png)
+
 **Automatic updates**
 
 vgCal's server utilizes node-cron to schedule daily retrieval of updated release information from the Giant Bomb API, being careful to run afoul of rate limits by spacing those requests out.
