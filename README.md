@@ -1,8 +1,6 @@
-**********************WILL WANT MOBILE + DESKTOP PICS
-
 # [vgCal](https://vgcal.now.sh/)
 
-[![vgCal home](EVENTUAL LINK TO CLICKABLE PIC)](https://vgcal.now.sh/)
+[![vgCal home](https://github.com/bradbautista/vgcal-client/blob/master/images/logotype-stripe.png)](https://vgcal.now.sh/)
 
 ## Table of Contents
 [About](#about)
