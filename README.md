@@ -24,7 +24,7 @@ vgCal's server serves a few purposes:
 <a name="features"></a>
 ## Features
 
-[vgCal server scheduling demonstration](https://github.com/bradbautista/vgcal-server/blob/master/images/cron.png)
+![vgCal server scheduling demonstration](https://github.com/bradbautista/vgcal-server/blob/master/images/cron.png)
 
 **Automatic updates**
 
